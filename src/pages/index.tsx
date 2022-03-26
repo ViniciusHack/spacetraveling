@@ -1,9 +1,6 @@
 // import { GetStaticProps } from 'next';
-
-// import { getPrismicClient } from '../services/prismic';
-
-// import commonStyles from '../styles/common.module.scss';
-// import styles from './home.module.scss';
+import { GetStaticProps } from 'next';
+import { getPrismicClient } from '../services/prismic';
 
 interface Post {
   uid?: string;
@@ -24,13 +21,24 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-export default function Home(): JSX.Element {
-  return <h1>Hello World</h1>;
+export default function Home({ postsPagination }: HomeProps): JSX.Element {
+  return <h1>{postsPagination.results[0].data.title}</h1>;
 }
 
-// export const getStaticProps = async () => {
-//   // const prismic = getPrismicClient();
-//   // const postsResponse = await prismic.query(TODO);
-
-//   // TODO
-// };
+export const getStaticProps: GetStaticProps = async (): Promise<any> => {
+  const prismicClient = getPrismicClient();
+  const postsResponse = await prismicClient.getAllByType('post');
+  // const postsResponse = await prismicClient.get({
+  //   predicates: prismic.predicates.at('document.type', 'post'),
+  //   fetch: ['post.title', 'post.content'],
+  //   pageSize: 100,
+  // });
+  return {
+    props: {
+      postsPagination: {
+        results: postsResponse,
+      },
+    },
+    revalidate: 60 * 2,
+  };
+};

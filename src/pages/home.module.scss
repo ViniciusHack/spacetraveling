@@ -1,1 +1,25 @@
 // TODO
+.postContainer {
+  & + & {
+    margin-top: 3rem;
+  }
+  > p {
+    margin: 0.5rem 0 1.5rem;
+  }
+}
+
+.flexInfo {
+  display: flex;
+  gap: 1.5rem;
+
+  div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "id": "536f5168-240a-4be0-8598-c238beb9349e",
+  "uid": "est-sunt-quis",
+  "type": "post",
+  "data": {
+    "title": "seize dot-com e-markets",
+    "subtitle": "exploit robust metrics",
+    "author": "redefine e-business channels",
+    "banner": {
+      "dimensions": {
+        "width": 900,
+        "height": 500
+      },
+      "alt": "Placeholder image",
+      "copyright": null,
+      "url": "https://images.unsplash.com/photo-1494173853739-c21f58b16055?w=900&h=500&fit=crop"
+    },
+    "content": [
+      {
+        "heading": "empower global partnerships",
+        "body": [
+          {
+            "type": "paragraph",
+            "text": "Laboris commodo sit aliquip minim proident fugiat reprehenderit. Cillum pariatur fugiat ex quis consequat reprehenderit. Sint et velit magna deserunt ea laborum nostrud dolor dolore.",
+            "spans": []
+          }
+        ]
+      },
+      {
+        "heading": "envisioneer dynamic e-commerce",
+        "body": [
+          {
+            "type": "paragraph",
+            "text": "Voluptate nisi culpa irure aliquip irure nostrud voluptate. Est anim duis voluptate anim voluptate minim incididunt tempor cillum. Voluptate est cupidatat est dolore enim consectetur consequat commodo aute enim voluptate reprehenderit commodo officia.",
+            "spans": []
+          }
+        ]
+      },
+      {
+        "heading": "implement rich models",
+        "body": [
+          {
+            "type": "paragraph",
+            "text": "Ex voluptate aliqua sit esse sit labore proident in.",
+            "spans": []
+          }
+        ]
+      }
+    ]
+  }
+}
