@@ -1,10 +1,16 @@
 // TODO
+
+.logo {
+  padding: 5rem 0 4rem;
+}
+
 .postContainer {
   & + & {
     margin-top: 3rem;
   }
   > p {
     margin: 0.5rem 0 1.5rem;
+    font-size: 1.125rem;
   }
 }
 
@@ -17,6 +23,13 @@
     align-items: center;
     gap: 0.5rem;
 
+    p {
+      font-size: 0.875rem;
+    }
+
+    &:first-child {
+      text-transform: capitalize;
+    }
     svg {
       width: 1.25rem;
       height: 1.25rem;

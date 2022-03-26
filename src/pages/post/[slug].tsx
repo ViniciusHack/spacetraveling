@@ -1,7 +1,7 @@
 // import { GetStaticPaths, GetStaticProps } from 'next';
 
 // import { getPrismicClient } from '../../services/prismic';
-
+import Header from '../../components/Header';
 // import commonStyles from '../../styles/common.module.scss';
 // import styles from './post.module.scss';
 
@@ -27,7 +27,12 @@
 // }
 
 export default function Post(): JSX.Element {
-  return <h1>Post</h1>;
+  return (
+    <>
+      <Header />
+      <h1>Post</h1>
+    </>
+  );
 }
 
 // // export const getStaticPaths = async () => {
