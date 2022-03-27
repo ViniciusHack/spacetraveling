@@ -1,47 +1,47 @@
-// import { GetStaticPaths, GetStaticProps } from 'next';
-
-// import { getPrismicClient } from '../../services/prismic';
+import { GetStaticProps } from 'next';
 import { FiCalendar, FiClock, FiUser } from 'react-icons/fi';
 import Header from '../../components/Header';
+import { getPrismicClient } from '../../services/prismic';
 import common from '../../styles/common.module.scss';
 import styles from './post.module.scss';
 
-// interface Post {
-//   first_publication_date: string | null;
-//   data: {
-//     title: string;
-//     banner: {
-//       url: string;
-//     };
-//     author: string;
-//     content: {
-//       heading: string;
-//       body: {
-//         text: string;
-//       }[];
-//     }[];
-//   };
-// }
+interface Post {
+  first_publication_date: string | null;
+  data: {
+    title: string;
+    banner: {
+      url: string;
+      alt: string;
+    };
+    author: string;
+    content: {
+      heading: string;
+      body: {
+        text: string;
+      }[];
+    }[];
+  };
+}
 
-// interface PostProps {
-//   post: Post;
-// }
+interface PostProps {
+  post: Post;
+}
 
-export default function Post(): JSX.Element {
+export default function Post({ post }: PostProps): JSX.Element {
   return (
     <div className={styles.content}>
       <Header />
-      <img src="/images/Banner.svg" alt="logo" />
+      <img src={post.data.banner.url} alt={post.data.banner.alt} />
       <div className={common.container}>
-        <h1>Criando um app CRA do zero</h1>
+        <h1>{post.data.title}</h1>
         <div className={styles.flexInfo}>
           <div>
             <FiCalendar />
-            <p>20 Mar 2020</p>
+            <p>{post.first_publication_date}</p>
           </div>
           <div>
             <FiUser />
-            <p>Joseph Oliveira</p>
+            <p>{post.data.author}</p>
           </div>
           <div>
             <FiClock />
@@ -49,43 +49,39 @@ export default function Post(): JSX.Element {
           </div>
         </div>
         {/* Para cada content, criar uma section */}
-        <section className={styles.body}>
-          <h2>Title Section #1</h2>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-            dolor sapien, vulputate eu diam at, condimentum hendrerit tellus.
-            Nam facilisis sodales felis, pharetra pharetra lectus auctor sed. Ut
-            venenatis mauris vel libero pretium, et pretium ligula faucibus.
-            Morbi nibh felis, elementum a posuere et, vulputate et erat. Nam
-            venenatis.
-          </p>
-        </section>
-        <section className={styles.body}>
-          <h2>Title Section #2</h2>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-            dolor sapien, vulputate eu diam at, condimentum hendrerit tellus.
-            Nam facilisis sodales felis, pharetra pharetra lectus auctor sed. Ut
-            venenatis mauris vel libero pretium, et pretium ligula faucibus.
-            Morbi nibh felis, elementum a posuere et, vulputate et erat. Nam
-            venenatis.
-          </p>
-        </section>
+        {post.data.content.map(postContent => (
+          <section key={postContent.heading} className={styles.body}>
+            <h2>{postContent.heading}</h2>
+            {postContent.body.map(content => (
+              <p key={content.text}>{content.text}</p>
+            ))}
+          </section>
+        ))}
       </div>
     </div>
   );
 }
 
-// export const getStaticPaths = async () => {
-//   const prismic = getPrismicClient();
-//   const posts = await prismic.query(TODO);
+export const getStaticPaths = async (): Promise<any> => {
+  // const prismic = getPrismicClient();
+  // const posts = await prismic.query(TODO);
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+  // TODO
+};
 
-//   // TODO
-// };
-
-// export const getStaticProps = async context => {
-//   const prismic = getPrismicClient();
-//   const response = await prismic.getByUID(TODO);
-
-//   // TODO
-// };
+export const getStaticProps: GetStaticProps = async (context): Promise<any> => {
+  const prismicClient = getPrismicClient();
+  const response = await prismicClient.getByUID(
+    'post',
+    'criando-um-app-cra-do-zero'
+  );
+  // TODO
+  return {
+    props: {
+      post: response,
+    },
+  };
+};
