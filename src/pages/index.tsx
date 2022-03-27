@@ -3,7 +3,7 @@ import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import { FiCalendar, FiUser } from 'react-icons/fi';
 import { getPrismicClient } from '../services/prismic';
-// import commonStyles from '../styles/common.module.scss';
+import common from '../styles/common.module.scss';
 import styles from './home.module.scss';
 
 interface Post {
@@ -28,7 +28,7 @@ interface HomeProps {
 export default function Home({ postsPagination }: HomeProps): JSX.Element {
   console.log(postsPagination);
   return (
-    <>
+    <div className={common.container}>
       <img className={styles.logo} src="/images/Logo.svg" alt="logo" />
       {postsPagination.results.map(post => (
         <div className={styles.postContainer}>
@@ -59,7 +59,7 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
           </div>
         </div>
       ))}
-    </>
+    </div>
   );
 }
 
