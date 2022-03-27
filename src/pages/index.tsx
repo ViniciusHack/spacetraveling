@@ -1,5 +1,6 @@
 // import { GetStaticProps } from 'next';
 import { GetStaticProps } from 'next';
+import Link from 'next/link';
 import { FiCalendar, FiUser } from 'react-icons/fi';
 import { getPrismicClient } from '../services/prismic';
 // import commonStyles from '../styles/common.module.scss';
@@ -28,14 +29,14 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
   console.log(postsPagination);
   return (
     <>
-      <img
-        className={styles.logo}
-        src="/images/Logo.svg"
-        alt="Logo Spacetreveling"
-      />
+      <img className={styles.logo} src="/images/Logo.svg" alt="logo" />
       {postsPagination.results.map(post => (
         <div className={styles.postContainer}>
-          <h2>{post.data.title}</h2>
+          <Link href={`/post/${post.uid}`}>
+            <a>
+              <h2>{post.data.title}</h2>
+            </a>
+          </Link>
           <p>{post.data.subtitle}</p>
           <div className={styles.flexInfo}>
             <div>

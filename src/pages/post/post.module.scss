@@ -1,1 +1,25 @@
 // TODO
+.content {
+  > img {
+    width: 100%;
+    margin-bottom: 5rem;
+  }
+  h1 {
+    margin-bottom: 1.5rem;
+  }
+
+  .flexInfo {
+    display: flex;
+    gap: 1.5rem;
+    > div {
+      display: flex;
+      gap: 0.5rem;
+    }
+  }
+
+  .body {
+    h2 {
+      margin: 4rem 0;
+    }
+  }
+}
