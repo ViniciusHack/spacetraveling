@@ -35,7 +35,7 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
   async function handleLoadMorePosts(): Promise<void> {
     const newPostResponse = await fetch(postsPagination.next_page);
     const { next_page, results: newPosts } = await newPostResponse.json();
-    const formatedPosts = newPosts.map(newPost => {
+    const formattedPosts = newPosts.map(newPost => {
       return {
         ...newPost,
         first_publication_date: format(
@@ -47,45 +47,46 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
         ),
       };
     });
-    console.log(formatedPosts, currentPosts);
     const newCurrentPosts = [...currentPosts];
-    const allPosts = newCurrentPosts.concat(formatedPosts);
+    const allPosts = newCurrentPosts.concat(formattedPosts);
     setCurrentPosts(allPosts);
     setHaveMorePosts(next_page);
   }
 
   return (
     <div className={common.container}>
-      <img className={styles.logo} src="/images/Logo.svg" alt="logo" />
-      {currentPosts.map(post => (
-        <div className={styles.postContainer}>
-          <Link key={post.uid} href={`/post/${post.uid}`}>
-            <a>
-              <h2>{post.data.title}</h2>
-            </a>
-          </Link>
-          <p>{post.data.subtitle}</p>
-          <div className={styles.flexInfo}>
-            <div>
-              <FiCalendar />
-              <time>{post.first_publication_date}</time>
-            </div>
-            <div>
-              <FiUser />
-              <p>{post.data.author}</p>
+      <main className={styles.content}>
+        <img className={styles.logo} src="/images/Logo.svg" alt="logo" />
+        {currentPosts.map(post => (
+          <div className={styles.postContainer}>
+            <Link key={post.uid} href={`/post/${post.uid}`}>
+              <a>
+                <h2>{post.data.title}</h2>
+              </a>
+            </Link>
+            <p>{post.data.subtitle}</p>
+            <div className={styles.flexInfo}>
+              <div>
+                <FiCalendar />
+                <time>{post.first_publication_date}</time>
+              </div>
+              <div>
+                <FiUser />
+                <p>{post.data.author}</p>
+              </div>
             </div>
           </div>
-        </div>
-      ))}
-      {!!haveMorePosts && (
-        <button
-          onClick={handleLoadMorePosts}
-          className={styles.loadMore}
-          type="button"
-        >
-          Carregar mais posts
-        </button>
-      )}
+        ))}
+        {!!haveMorePosts && (
+          <button
+            onClick={handleLoadMorePosts}
+            className={styles.loadMore}
+            type="button"
+          >
+            Carregar mais posts
+          </button>
+        )}
+      </main>
     </div>
   );
 }
