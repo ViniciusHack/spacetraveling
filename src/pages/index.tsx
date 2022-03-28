@@ -34,24 +34,24 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
 
   async function handleLoadMorePosts(): Promise<void> {
     const newPostResponse = await fetch(postsPagination.next_page);
-    const { next_page, results: newPost } = await newPostResponse.json();
-    const postAlreadyExists = currentPosts.find(
-      post => post.uid === newPost[0].uid
-    );
-    newPost[0].first_publication_date = format(
-      new Date(newPost[0].first_publication_date),
-      'PP',
-      {
-        locale: ptBR,
-      }
-    );
-    console.log(newPost[0].first_publication_date);
-    if (!postAlreadyExists) {
-      const newCurrentPosts = [...currentPosts];
-      newCurrentPosts.push(newPost[0]);
-      setCurrentPosts(newCurrentPosts);
-      setHaveMorePosts(next_page);
-    }
+    const { next_page, results: newPosts } = await newPostResponse.json();
+    const formatedPosts = newPosts.map(newPost => {
+      return {
+        ...newPost,
+        first_publication_date: format(
+          new Date(newPost.first_publication_date),
+          'PP',
+          {
+            locale: ptBR,
+          }
+        ),
+      };
+    });
+    console.log(formatedPosts, currentPosts);
+    const newCurrentPosts = [...currentPosts];
+    const allPosts = newCurrentPosts.concat(formatedPosts);
+    setCurrentPosts(allPosts);
+    setHaveMorePosts(next_page);
   }
 
   return (
