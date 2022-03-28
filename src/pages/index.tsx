@@ -33,7 +33,7 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
       <img className={styles.logo} src="/images/Logo.svg" alt="logo" />
       {postsPagination.results.map(post => (
         <div className={styles.postContainer}>
-          <Link href={`/post/${post.uid}`}>
+          <Link key={post.uid} href={`/post/${post.uid}`}>
             <a>
               <h2>{post.data.title}</h2>
             </a>
@@ -51,6 +51,11 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
           </div>
         </div>
       ))}
+      {!!postsPagination.next_page && (
+        <button className={styles.loadMore} type="button">
+          Carregar mais posts
+        </button>
+      )}
     </div>
   );
 }
@@ -62,13 +67,11 @@ export const getStaticProps: GetStaticProps = async (): Promise<{
   revalidate: number;
 }> => {
   const prismicClient = getPrismicClient();
-  const postsResponse = await prismicClient.getAllByType('post');
-  // const postsResponse = await prismicClient.get({
-  //   predicates: prismic.predicates.at('document.type', 'post'),
-  //   fetch: ['post.title', 'post.content'],
-  //   pageSize: 100,
-  // });
-  const posts = postsResponse.map(post => {
+  const postsResponse = await prismicClient.getByType('post', {
+    pageSize: 5,
+  });
+  console.log(postsResponse);
+  const posts = postsResponse.results.map(post => {
     return {
       ...post,
       first_publication_date: format(
@@ -83,6 +86,7 @@ export const getStaticProps: GetStaticProps = async (): Promise<{
   return {
     props: {
       postsPagination: {
+        next_page: postsResponse.next_page,
         results: posts,
       },
     },
