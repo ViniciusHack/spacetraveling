@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
+import { useState } from 'react';
 import { FiCalendar, FiUser } from 'react-icons/fi';
 import { getPrismicClient } from '../services/prismic';
 import common from '../styles/common.module.scss';
@@ -28,10 +29,35 @@ interface HomeProps {
 }
 
 export default function Home({ postsPagination }: HomeProps): JSX.Element {
+  const [currentPosts, setCurrentPosts] = useState(postsPagination.results);
+  const [haveMorePosts, setHaveMorePosts] = useState(postsPagination.next_page);
+
+  async function handleLoadMorePosts(): Promise<void> {
+    const newPostResponse = await fetch(postsPagination.next_page);
+    const { next_page, results: newPost } = await newPostResponse.json();
+    const postAlreadyExists = currentPosts.find(
+      post => post.uid === newPost[0].uid
+    );
+    newPost[0].first_publication_date = format(
+      new Date(newPost[0].first_publication_date),
+      'PP',
+      {
+        locale: ptBR,
+      }
+    );
+    console.log(newPost[0].first_publication_date);
+    if (!postAlreadyExists) {
+      const newCurrentPosts = [...currentPosts];
+      newCurrentPosts.push(newPost[0]);
+      setCurrentPosts(newCurrentPosts);
+      setHaveMorePosts(next_page);
+    }
+  }
+
   return (
     <div className={common.container}>
       <img className={styles.logo} src="/images/Logo.svg" alt="logo" />
-      {postsPagination.results.map(post => (
+      {currentPosts.map(post => (
         <div className={styles.postContainer}>
           <Link key={post.uid} href={`/post/${post.uid}`}>
             <a>
@@ -51,8 +77,12 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
           </div>
         </div>
       ))}
-      {!!postsPagination.next_page && (
-        <button className={styles.loadMore} type="button">
+      {!!haveMorePosts && (
+        <button
+          onClick={handleLoadMorePosts}
+          className={styles.loadMore}
+          type="button"
+        >
           Carregar mais posts
         </button>
       )}
@@ -70,7 +100,6 @@ export const getStaticProps: GetStaticProps = async (): Promise<{
   const postsResponse = await prismicClient.getByType('post', {
     pageSize: 5,
   });
-  console.log(postsResponse);
   const posts = postsResponse.results.map(post => {
     return {
       ...post,
@@ -90,6 +119,6 @@ export const getStaticProps: GetStaticProps = async (): Promise<{
         results: posts,
       },
     },
-    revalidate: 60 * 2,
+    revalidate: 60 * 60 * 24,
   };
 };
