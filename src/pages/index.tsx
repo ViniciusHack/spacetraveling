@@ -1,4 +1,6 @@
 // import { GetStaticProps } from 'next';
+import { format } from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import { FiCalendar, FiUser } from 'react-icons/fi';
@@ -26,7 +28,6 @@ interface HomeProps {
 }
 
 export default function Home({ postsPagination }: HomeProps): JSX.Element {
-  console.log(postsPagination);
   return (
     <div className={common.container}>
       <img className={styles.logo} src="/images/Logo.svg" alt="logo" />
@@ -41,16 +42,7 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
           <div className={styles.flexInfo}>
             <div>
               <FiCalendar />
-              <p>
-                {new Intl.DateTimeFormat('pt-BR', {
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric',
-                })
-                  .format(new Date(post.first_publication_date))
-                  .replaceAll('de', '')
-                  .replaceAll('.', '')}
-              </p>
+              <time>{post.first_publication_date}</time>
             </div>
             <div>
               <FiUser />
@@ -63,7 +55,12 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
   );
 }
 
-export const getStaticProps: GetStaticProps = async (): Promise<any> => {
+export const getStaticProps: GetStaticProps = async (): Promise<{
+  props: {
+    postsPagination: unknown;
+  };
+  revalidate: number;
+}> => {
   const prismicClient = getPrismicClient();
   const postsResponse = await prismicClient.getAllByType('post');
   // const postsResponse = await prismicClient.get({
@@ -71,10 +68,22 @@ export const getStaticProps: GetStaticProps = async (): Promise<any> => {
   //   fetch: ['post.title', 'post.content'],
   //   pageSize: 100,
   // });
+  const posts = postsResponse.map(post => {
+    return {
+      ...post,
+      first_publication_date: format(
+        new Date(post.first_publication_date),
+        'PP',
+        {
+          locale: ptBR,
+        }
+      ),
+    };
+  });
   return {
     props: {
       postsPagination: {
-        results: postsResponse,
+        results: posts,
       },
     },
     revalidate: 60 * 2,

@@ -23,13 +23,10 @@
     align-items: center;
     gap: 0.5rem;
 
-    p {
+    p, time {
       font-size: 0.875rem;
     }
 
-    &:first-child {
-      text-transform: capitalize;
-    }
     svg {
       width: 1.25rem;
       height: 1.25rem;
