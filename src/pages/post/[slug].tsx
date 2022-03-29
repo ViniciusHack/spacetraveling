@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
-import { GetStaticProps } from 'next';
+import { GetStaticPaths, GetStaticProps } from 'next';
+import { useRouter } from 'next/router';
 import { RichText } from 'prismic-dom';
 import { FiCalendar, FiClock, FiUser } from 'react-icons/fi';
 import Header from '../../components/Header';
@@ -30,6 +31,12 @@ interface PostProps {
   post: Post;
 }
 export default function Post({ post }: PostProps): JSX.Element {
+  const router = useRouter();
+
+  if (router.isFallback) {
+    return <h1>Carregando...</h1>;
+  }
+
   function getReadTime(content: any[]): string {
     return content.reduce((prev, contentProps) => {
       const words = contentProps.body.split(' ');
@@ -72,12 +79,28 @@ export default function Post({ post }: PostProps): JSX.Element {
   );
 }
 
-export const getStaticPaths = async (): Promise<any> => {
+export const getStaticPaths: GetStaticPaths = async (): Promise<any> => {
   // const prismic = getPrismicClient();
   // const posts = await prismic.query(TODO);
   return {
-    paths: [],
-    fallback: 'blocking',
+    paths: [
+      {
+        params: {
+          slug: 'como-utilizar-hooks',
+        },
+      },
+      {
+        params: {
+          slug: 'jamstack-geleia-de-javascript-api-e-markup',
+        },
+      },
+      {
+        params: {
+          slug: 'typescript-por-tras-do-superset-de-javascript',
+        },
+      },
+    ],
+    fallback: true,
   };
   // TODO
 };
