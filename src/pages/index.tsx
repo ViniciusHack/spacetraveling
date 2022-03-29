@@ -100,6 +100,7 @@ export const getStaticProps: GetStaticProps = async (): Promise<{
   const prismicClient = getPrismicClient();
   const postsResponse = await prismicClient.getByType('post', {
     pageSize: 5,
+    orderings: ['document.first_publication_date desc'],
   });
   const posts = postsResponse.results.map(post => {
     return {
