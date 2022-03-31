@@ -1,10 +1,7 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { GetStaticPropsContext } from 'next';
-import { ParsedUrlQuery } from 'querystring';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
-
+import App from '../../pages';
 import { getPrismicClient } from '../../services/prismic';
-import App, { getStaticProps } from '../../pages';
 
 interface Post {
   uid?: string;
@@ -104,26 +101,6 @@ describe('Home', () => {
           }),
       });
     });
-  });
-
-  it('should be able to return prismic posts documents using getStaticProps', async () => {
-    const postsPaginationReturn = mockedQueryReturn;
-
-    const getStaticPropsContext: GetStaticPropsContext<ParsedUrlQuery> = {};
-
-    const response = (await getStaticProps(
-      getStaticPropsContext
-    )) as GetStaticPropsResult;
-
-    expect(response.props.postsPagination.next_page).toEqual(
-      postsPaginationReturn.next_page
-    );
-    expect(response.props.postsPagination.results).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining(postsPaginationReturn.results[0]),
-        expect.objectContaining(postsPaginationReturn.results[1]),
-      ])
-    );
   });
 
   it('should be able to render posts documents info', () => {

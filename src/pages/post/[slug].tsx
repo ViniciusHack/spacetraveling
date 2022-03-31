@@ -39,7 +39,8 @@ export default function Post({ post }: PostProps): JSX.Element {
 
   function getReadTime(content: any[]): string {
     return content.reduce((prev, contentProps) => {
-      const words = contentProps.body.split(' ');
+      const teste = RichText.asText(content);
+      const words = teste.split(' ');
       const total = Math.ceil(words.length / 200);
       return prev + total;
     }, 0);
@@ -50,7 +51,7 @@ export default function Post({ post }: PostProps): JSX.Element {
       <Header />
       <img src={post.data.banner.url} alt={post.data.banner.alt} />
       <main className={common.container}>
-        <article>
+        <article key={post.data.title}>
           <h1>{post.data.title}</h1>
           <div className={styles.flexInfo}>
             <div>
@@ -91,12 +92,7 @@ export const getStaticPaths: GetStaticPaths = async (): Promise<any> => {
       },
       {
         params: {
-          slug: 'jamstack-geleia-de-javascript-api-e-markup',
-        },
-      },
-      {
-        params: {
-          slug: 'typescript-por-tras-do-superset-de-javascript',
+          slug: 'criando-um-app-cra-do-zero',
         },
       },
     ],
