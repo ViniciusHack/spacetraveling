@@ -1,4 +1,4 @@
-# spacetraveling
+# ![Logo](https://user-images.githubusercontent.com/60555584/162856704-d1499bee-6694-481e-aed5-56310cb63e88.svg)
 spacetraveling is a blog like a newsletter, a project where we need to create in the third Ignite's chapter
 
 
