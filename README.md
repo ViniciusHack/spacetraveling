@@ -24,6 +24,7 @@
   <a href="#-about-the-project">About the project</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-features">Features</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-getting-started">Getting started</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-deploy">Deploy</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-technologies">Technologies</a>
 </p>
 
@@ -41,7 +42,13 @@
 - Generate stacic pages when visited with getStaticProps
 - Prismic post listing
 
-## ✔️ Getting Started
+## 💻 Getting started
+### Requirements
+
+- <a href="https://nodejs.org/en/">NodeJS</a>
+- <a href="https://classic.yarnpkg.com/lang/en/docs/install/">yarn</a> (optional)
+
+**Follow the steps below**
 ```bash
 # Clone the project and access the folder
 $ git clone https://github.com/ViniciusHack/spacetraveling/ && cd spacetraveling
