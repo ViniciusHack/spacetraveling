@@ -71,3 +71,7 @@ That app was deployed on Vercel and you can access it clicking <a href="https://
 - Next.js
 - SCSS
 - Prismic CMS
+
+---
+
+Made with 💜 &nbsp;by Vinícius Hack 👋 &nbsp;[See my linkedin](https://www.linkedin.com/in/viniciushack/)
